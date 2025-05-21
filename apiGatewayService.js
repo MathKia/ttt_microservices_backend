@@ -18,11 +18,19 @@ const chat_service = process.env.CHAT_ADD
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
-    origin: [originURL, game_service, chat_service],  // Allow frontend (React) to make requests
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+    origin: [originURL], // e.g., 'https://react.kiaramathuraportfolio.com'
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
     credentials: true
-  }));
+}));
+
+// Handle OPTIONS preflight requests globally
+app.options("*", cors({
+    origin: [originURL],
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
+    credentials: true
+}));
 
 // Forward login request to Login Service
 app.use("/api/auth", async (req, res) => {

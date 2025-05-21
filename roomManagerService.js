@@ -8,15 +8,20 @@ env.config();
 const PORT = process.env.ROOM_PORT;
 const app = express();
 
-// CORS configuration
+// Define CORS options only once
 const corsOptions = {
-    origin: [process.env.API_GW_ADD],  // Allow only API Gateway
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true
+  origin: [process.env.API_GW_ADD], // e.g., 'https://api.kiaramathuraportfolio.com'
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
+  credentials: true
 };
 
+// Apply CORS
 app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options("*", cors(corsOptions));
+
 app.use(express.json());
 app.use(cookieParser());
 

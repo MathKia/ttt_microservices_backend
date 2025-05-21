@@ -10,15 +10,23 @@ const app = express();
 const PORT = process.env.AUTH_PORT;
 // CORS configuration
 const corsOptions = {
-    origin: [process.env.API_GW_ADD],  // Allow only API Gateway
-    methods: ["GET", "POST"],
+    origin: [process.env.API_GW_ADD],
+    methods: ["GET", "POST", "OPTIONS"], // Include OPTIONS
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 };
 
+// Handle preflight first
+app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+
+// logging for origin
+app.use((req, res, next) => {
+  console.log("Incoming Origin:", req.get("Origin"));
+  next();
+});
 
 // Use the login routes
 app.use("/api/auth", (req, res, next) => {
