@@ -151,26 +151,6 @@ chatNamespace.on("connection", (socket) => {
             
         console.log(`User ${username} has disconnected. Removing them from room ${room} in chat service`)
         removePlayerFromRoom(socket, room);
-
-          // 🔁 Notify the Room Manager via API Gateway
-          try {
-            const response = await axios.post(`${process.env.ROOM_API_BASE_URL}/exit`, {
-              room: room,
-              username: username,
-            }, 
-            {
-              params: { mode: "socket" }, // mode = socket is like an SOS exit, not requiring auth token because its a socket event not user event
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              withCredentials: false, // No cookies here anyway
-            });
-
-            console.log("Room Manager acknowledged exit:", response.data);
-        } 
-        catch (err) {
-            console.error("Failed to notify Room Manager:", err.message);
-        }
         break;
         }
       }

@@ -58,6 +58,15 @@ function handleAuthSuccess(res, mode, token, message) {
         });
     }
 
+    if (mode==="mobile"){
+        console.log("Login on mobile ... returning token");
+        return res.json({ 
+            success: true, 
+            message: message,
+            token  // Return token directly for desktop clients
+        });
+    }
+
     // if error (no valid mode for some reason)
     return res.status(400).json({ success: false, message: "Invalid mode specified" });
 }
@@ -71,7 +80,7 @@ router.post("/signup", async(req, res)=>{
     const {password} = req.body;
     const username = req.body.username.toLowerCase();
     
-    console.log("Recieved: ", username, password)
+    console.log("Recieved: ", username, password, mode)
 
     /* check if desired username and password associated with existing user in database */
     try{
@@ -139,6 +148,7 @@ router.post("/login", async (req, res) => {
 
         /* Generate JWT token -> using token middleware*/
         const token = generateToken(username, EXPIRATION)
+        console.log("Expiration received in generateToken:", EXPIRATION);
         console.log("generated token , ", token)
         // handle auth func = checks mode desktop/browser to pass token as auth header or cookie
         return handleAuthSuccess(res, mode, token, "Login successful.")
@@ -177,6 +187,10 @@ router.post("/logout", (req, res) => {
     else if (mode === "desktop") {
         // No cookies to clear, just return a response indicating logout
         return res.json({ success: true, message: "Logged out from desktop" });
+    } 
+    else if (mode === "mobile") {
+        // No cookies to clear, just return a response indicating logout
+        return res.json({ success: true, message: "Logged out from mobile" });
     } 
     else {
         return res.status(400).json({ success: false, message: "Invalid mode specified" });

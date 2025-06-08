@@ -27,17 +27,12 @@ export function verifyToken(req, res, next) {
     token = req.cookies.authToken;
     console.log(`browser token from cookie = ${token}`)
   }
-  /* if mode = desktop: extract JWT from authoization header (!!!!! HAVE NOT YET STARTED ON PYTHON DESKTOP AUTH HANDLING MUST UPDATE THIS) */
-  else if (mode === "desktop"){
-    /******************** BY PASSING THIS WHILE GETTING APIS SORTED IN DESKTOP ***********************/
-     /******************** MUST COME BACK AND PROPERLY EXTRACT TOKEN FROM AUTH HEADER ***********************/
-      /******************** FOR NOW USING SAME APPROACH AS MODE = SOCKET ***********************/
-    token = req.headers.authorization?.split(" ")[1]; // Extract from "Bearer <token>"
-    console.log(`desktop token from Authorization header = ${token}`);
-    return next(); // ✅ Allow through desktop request (doesnt move on to decode/verify step cause 'next()')
-  }
+  /* if mode = desktop or mobile: extract JWT from authoization header */
+  else if (mode === "desktop" || mode === "mobile") {
+    token = req.headers.authorization?.split(" ")[1];
+    console.log(`${mode} token from Authorization header = ${token}`);
   /* if mode = socket: SOCKET DISCONNECT EVENT wont require auth (on socket event not user event) */
-  else if (mode === "socket"){
+  } else if (mode === "socket"){
     console.log("Socket mode: skipping strict JWT validation, trusting socket-originated request.");
     return next(); // ✅ Allow through socket request (doesnt move on to decode/verify step cause 'next()')
   }

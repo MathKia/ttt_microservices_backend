@@ -251,6 +251,7 @@ gameNamespace.on("connection", (socket) => {
             
         // 🔁 Notify the Room Manager via API Gateway
         try {
+            console.log('sending request to exit room')
             const response = await axios.post(`${process.env.ROOM_API_BASE_URL}/exit`, {
                 room: room,
                 username: username,

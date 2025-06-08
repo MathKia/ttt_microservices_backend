@@ -17,19 +17,47 @@ const chat_service = process.env.CHAT_ADD
 
 app.use(express.json());
 app.use(cookieParser())
+//// /**************** the original cors before MOBILE *******************/
+// app.use(cors({
+//     origin: [originURL], // e.g., 'https://react.kiaramathuraportfolio.com'
+//     methods: ["GET", "POST", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
+//     credentials: true
+// }));
+
+// // Handle OPTIONS preflight requests globally
+// app.options("*", cors({
+//     origin: [originURL],
+//     methods: ["GET", "POST", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
+//     credentials: true
+// }));
+
 app.use(cors({
-    origin: [originURL], // e.g., 'https://react.kiaramathuraportfolio.com'
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
-    credentials: true
+  origin: function (origin, callback) {
+    if (!origin || origin === process.env.REACT_ORIGIN_URL) {
+      callback(null, true); // allow undefined (e.g. mobile apps) and your web frontend
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
+  credentials: true
 }));
 
-// Handle OPTIONS preflight requests globally
+// Preflight requests (OPTIONS)
 app.options("*", cors({
-    origin: [originURL],
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
-    credentials: true
+  origin: function (origin, callback) {
+    if (!origin || origin === process.env.REACT_ORIGIN_URL) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
+  credentials: true
 }));
 
 // Forward login request to Login Service
@@ -127,7 +155,7 @@ app.use("/api/room", async (req, res) => {
         return res.status(response.status).json(response.data); // send back the JSON response object from auth service for status update
   
     } catch (error) {
-        console.error("Error forwarding request:", error);
+        console.error("Error forwarding request:", error.status);
         return res.status(500).json({ success: false, message: "Server error" });
     }
 });
