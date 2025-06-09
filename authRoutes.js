@@ -32,6 +32,7 @@ const router = express.Router();
 
 // reusable auth handle function
 function handleAuthSuccess(res, mode, token, message) {
+    console.log('handle auth success called : ', mode, token, message)
     // if mode = browser -> put token in cookies 
     if (mode === "browser") {
         console.log("Login on browser: passing token in cookie req");
@@ -112,7 +113,12 @@ router.post("/signup", async(req, res)=>{
 
 // login route -> checks if username and password correct 
 router.post("/login", async (req, res) => {
-    console.log("Login route called");
+    console.log("Login route called");console.log("=== LOGIN REQUEST RECEIVED ===");
+    console.log("Full URL:", req.originalUrl);
+    console.log("Query params:", req.query);
+    console.log("Request body:", req.body);
+    console.log("Headers:", req.headers);
+
 
     /* pass mode, username, password from client login req to backend login service route */
     const { mode } = req.query; // mode=browser or mode=desktop
