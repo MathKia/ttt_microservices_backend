@@ -247,5 +247,7 @@ Platform	         Repository
   Desktop App	       https://github.com/MathKia/ttt_micro_desktopapp
   Mobile App	       https://github.com/MathKia/ttt_mobile_frontend
 
-🙋 Support
-Feel free to open an issue or email me if you have questions or want to fork the project.
+🙋 Contact me
+
+  Developed by MathKia 📧 Email: mathkia00+github@gmail.com or via https://kiaramathuraportfolio.com
+  For production setup or cloud deployment guidance, please contact directly.
