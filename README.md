@@ -199,7 +199,7 @@ Here’s how the services interact:
 
   1. Clone repo
 
-      git clone https://github.com/your-username/ttt_microservices_backend.git
+      git clone https://github.com/MathKia/ttt_microservices_backend.git
       cd ttt_microservices_backend
 
   2. Install dependencies 
