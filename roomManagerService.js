@@ -10,7 +10,7 @@ const app = express();
 
 // Define CORS options only once
 const corsOptions = {
-  origin: [process.env.API_GW_ADD], // e.g., 'https://api.kiaramathuraportfolio.com'
+  origin: [process.env.API_GW_ADD],
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
   credentials: true
