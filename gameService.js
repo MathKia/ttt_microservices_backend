@@ -4,8 +4,6 @@ import express from "express";
 import axios from "axios"; // for disconnect event to send 'exit room req' -> API GW -> room man
 import env from "dotenv";
 import jwt from "jsonwebtoken";
-//import fs from "fs"; // for ssl certificates for services directly accessed by frontend (api gw, chat, game)
-//import https from "https"; // make express app into low-level http server for socket.io to attach too/ socket.io CANT attach directly to express
 
 // allow env variables to be configured
 env.config();
@@ -13,13 +11,7 @@ env.config();
 const PORT = process.env.GAME_PORT;
 const app = express();
 
-// // load ssl certificate and key from certbot # expires 9 June 2025
-// const privateKey = fs.readFileSync("/etc/letsencrypt/live/game.kiaramathuraportfolio.com/privkey.pem", "utf8");
-// const certificate = fs.readFileSync("/etc/letsencrypt/live/game.kiaramathuraportfolio.com/fullchain.pem", "utf8");
-// const credentials = { key: privateKey, cert: certificate };
-
 // //HTTPS server for websockets
-// const server = https.createServer(credentials, app)
 const server = http.createServer(app)
 const io = new Server(server, {
   cors: {
@@ -42,7 +34,6 @@ rooms = {
   }
 }
 */
-
 
 // Add a specific namespace for the chat service
 const gameNamespace = io.of("/game");  // <-- Define the namespace
