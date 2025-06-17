@@ -17,21 +17,6 @@ const chat_service = process.env.CHAT_ADD
 
 app.use(express.json());
 app.use(cookieParser())
-//// /**************** the original cors before MOBILE *******************/
-// app.use(cors({
-//     origin: [originURL], // e.g., 'https://react.kiaramathuraportfolio.com'
-//     methods: ["GET", "POST", "OPTIONS"],
-//     allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
-//     credentials: true
-// }));
-
-// // Handle OPTIONS preflight requests globally
-// app.options("*", cors({
-//     origin: [originURL],
-//     methods: ["GET", "POST", "OPTIONS"],
-//     allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
-//     credentials: true
-// }));
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -76,7 +61,7 @@ app.use("/api/auth", async (req, res) => {
             'Referer': req.get('Referer') || originURL,
             'Accept-Encoding': req.get('Accept-Encoding') || 'gzip, deflate',
             'Accept-Language': req.get('Accept-Language') || 'en-US,en;q=0.9',
-             // 🔥 Add Authorization header if present
+             //  Add Authorization header if present
             'Authorization': req.get('Authorization') || '',
             'Cookie': req.get('Cookie') || '', // Forward cookies manually if needed
         };
@@ -133,7 +118,7 @@ app.use("/api/room", async (req, res) => {
             'Referer': req.get('Referer') || originURL,
             'Accept-Encoding': req.get('Accept-Encoding') || 'gzip, deflate',
             'Accept-Language': req.get('Accept-Language') || 'en-US,en;q=0.9',
-             // 🔥 Add Authorization header if present
+             // Add Authorization header if present
             'Authorization': req.get('Authorization') || '',
             'Cookie': req.get('Cookie') || '', // Forward cookies manually if needed
         };
